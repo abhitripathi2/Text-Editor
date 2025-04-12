@@ -2,8 +2,10 @@ package org.example;
 
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class TextEditor {
+public class TextEditor implements ActionListener {
 
     //Declaring the properties of text Editor
     JFrame frame;
@@ -40,6 +42,10 @@ public class TextEditor {
         newFile = new JMenuItem("New Window");
         openFile = new JMenuItem("Open File");
         saveFile = new JMenuItem("Save File");
+        //add Action Listener to file menu item
+        newFile.addActionListener(this);
+        openFile.addActionListener(this);
+        saveFile.addActionListener(this);
         //add these menu items to file menu
         file.add(newFile);
         file.add(openFile);
@@ -51,6 +57,14 @@ public class TextEditor {
         paste = new JMenuItem("Paste");
         selectAll = new JMenuItem("Select All");
         close = new JMenuItem("Close");
+
+        //add Action Listener to Edit menu items
+        cut.addActionListener(this);
+        copy.addActionListener(this);
+        paste.addActionListener(this);
+        selectAll.addActionListener(this);
+        close.addActionListener(this);
+
         //add these menu items to edit menu
         edit.add(cut);
         edit.add(copy);
@@ -80,6 +94,30 @@ public class TextEditor {
         frame.setVisible(true);
         frame.setLayout(null);
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent){
+        if (actionEvent.getSource()==cut){
+            //perform cut operation
+            textArea.cut();
+        }
+        if (actionEvent.getSource()==copy){
+            //perform copy operation
+            textArea.copy();
+        }
+        if (actionEvent.getSource()==paste){
+            //perform paste operation
+            textArea.paste();
+        }
+        if (actionEvent.getSource()==selectAll){
+            //perform select all operations
+            textArea.selectAll();
+        }
+        if (actionEvent.getSource()==close){
+            //perform close operation
+            System.exit(0);
+        }
     }
     public static void main(String[] args) {
 
