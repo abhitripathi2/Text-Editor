@@ -4,6 +4,7 @@ package org.example;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 public class TextEditor implements ActionListener {
 
@@ -117,6 +118,62 @@ public class TextEditor implements ActionListener {
         if (actionEvent.getSource()==close){
             //perform close operation
             System.exit(0);
+        }
+        if (actionEvent.getSource()==openFile){
+            //open a file chooser
+            JFileChooser fileChooser = new JFileChooser("C:\\Users\\abhit\\OneDrive\\Desktop");
+            int chooseOption = fileChooser.showOpenDialog(null);
+            //if we click on open button
+            if (chooseOption==JFileChooser.APPROVE_OPTION){
+                //getting selected option
+                File file = fileChooser.getSelectedFile();
+                //get the path of selected file
+                String filePath = file.getPath();
+                try {
+                    //Initialize file read
+                    FileReader fileReader = new FileReader(filePath);
+                    //Initialize Buffered reader
+                    BufferedReader bufferedReader = new BufferedReader(fileReader);
+                    String intermediate = "", output = "";
+                    //Read content of file line by line
+                    while ((intermediate = bufferedReader.readLine())!=null){
+                        output+=intermediate+"\n";
+                    }
+                    //Set the output String to text area
+                    textArea.setText(output);
+                }
+                catch (IOException ioException){
+                    ioException.printStackTrace();
+                }
+            }
+        }
+        //if we click on save button
+        if (actionEvent.getSource()==saveFile){
+            //open a file chooser
+            JFileChooser fileChooser = new JFileChooser("C:\\Users\\abhit\\OneDrive\\Desktop");
+            //get choose option from file chooser
+            int chooseOption = fileChooser.showSaveDialog(null);
+            //check if we click on sae button
+            if (chooseOption==JFileChooser.APPROVE_OPTION){
+                //create a new file with chosen directory path and file name
+                File file = new File(fileChooser.getSelectedFile().getAbsolutePath()+".txt");
+                try {
+                    //initialize file writer
+                    FileWriter fileWriter = new FileWriter(file);
+                    //Initialize buffered writer
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                    //write contents of text area to file
+                    textArea.write(bufferedWriter);
+                    bufferedWriter.close();
+                }
+                catch (IOException ioException){
+                    ioException.printStackTrace();
+                }
+            }
+        }
+        //if we click on new button
+        if (actionEvent.getSource()==openFile){
+            TextEditor newTextEditor = new TextEditor();
         }
     }
     public static void main(String[] args) {
